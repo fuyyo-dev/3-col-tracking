@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Tracking Page — Revamp</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500&display=swap" rel="stylesheet" />
+<script src="https://cdn.tailwindcss.com"></script>
+<script>
+  tailwind.config = {
+    theme: {
+      extend: {
+        fontFamily: {
+          sans: ['"Plus Jakarta Sans"', 'ui-sans-serif', 'system-ui', 'sans-serif'],
+          mono: ['"JetBrains Mono"', 'ui-monospace', 'monospace'],
+        },
+        colors: {
+          border: 'hsl(var(--border) / <alpha-value>)',
+          input: 'hsl(var(--input) / <alpha-value>)',
+          ring: 'hsl(var(--ring) / <alpha-value>)',
+          background: 'hsl(var(--background) / <alpha-value>)',
+          foreground: 'hsl(var(--foreground) / <alpha-value>)',
+          surface: 'hsl(var(--surface) / <alpha-value>)',
+          primary: { DEFAULT: 'hsl(var(--primary) / <alpha-value>)', foreground: 'hsl(var(--primary-foreground) / <alpha-value>)' },
+          secondary: { DEFAULT: 'hsl(var(--secondary) / <alpha-value>)', foreground: 'hsl(var(--secondary-foreground) / <alpha-value>)' },
+          muted: { DEFAULT: 'hsl(var(--muted) / <alpha-value>)', foreground: 'hsl(var(--muted-foreground) / <alpha-value>)' },
+          accent: { DEFAULT: 'hsl(var(--accent) / <alpha-value>)', foreground: 'hsl(var(--accent-foreground) / <alpha-value>)' },
+          card: { DEFAULT: 'hsl(var(--card) / <alpha-value>)', foreground: 'hsl(var(--card-foreground) / <alpha-value>)' },
+          brand: { DEFAULT: 'hsl(var(--brand) / <alpha-value>)', foreground: 'hsl(var(--brand-foreground) / <alpha-value>)' },
+          highlight: { DEFAULT: 'hsl(var(--highlight) / <alpha-value>)', foreground: 'hsl(var(--highlight-foreground) / <alpha-value>)' },
+          success: { DEFAULT: 'hsl(var(--success) / <alpha-value>)', foreground: 'hsl(var(--success-foreground) / <alpha-value>)' },
+        },
+        borderRadius: { lg: 'var(--radius)', md: 'calc(var(--radius) - 3px)', sm: 'calc(var(--radius) - 5px)' },
+      },
+    },
+  };
+</script>
+<style>
+  /* ── Theme token sets (light only) ───────────────────────── */
+  :root, .theme-minimal {
+    --background: 0 0% 100%; --surface: 240 6% 97%;
+    --foreground: 240 10% 4%; --card: 0 0% 100%; --card-foreground: 240 10% 4%;
+    --muted: 240 5% 96%; --muted-foreground: 240 4% 44%;
+    --secondary: 240 5% 96%; --secondary-foreground: 240 6% 10%;
+    --border: 240 6% 90%; --input: 240 6% 90%;
+    --primary: 240 6% 10%; --primary-foreground: 0 0% 98%;
+    --accent: 240 5% 96%; --accent-foreground: 240 6% 10%; --ring: 240 5% 65%;
+    --brand: 160 84% 36%; --brand-foreground: 0 0% 100%;
+    --highlight: 43 96% 52%; --highlight-foreground: 30 35% 12%;
+    --success: 160 84% 36%; --success-foreground: 0 0% 100%;
+    --radius: 0.6rem; --promo-h1: 162 32% 85%; --promo-h2: 176 26% 70%;
+  }
+  .theme-premium {
+    --background: 36 33% 99%; --surface: 38 26% 96%;
+    --foreground: 282 16% 14%; --card: 0 0% 100%; --card-foreground: 282 16% 14%;
+    --muted: 300 14% 95%; --muted-foreground: 286 8% 42%;
+    --secondary: 300 16% 95.5%; --secondary-foreground: 282 22% 18%;
+    --border: 300 14% 90%; --input: 300 14% 90%;
+    --primary: 280 36% 17%; --primary-foreground: 36 33% 99%;
+    --accent: 280 40% 95%; --accent-foreground: 280 30% 28%; --ring: 262 70% 62%;
+    --brand: 262 78% 56%; --brand-foreground: 0 0% 100%;
+    --highlight: 330 78% 56%; --highlight-foreground: 0 0% 100%;
+    --success: 160 70% 38%; --success-foreground: 0 0% 100%;
+    --radius: 0.95rem; --promo-h1: 262 46% 86%; --promo-h2: 300 38% 80%;
+  }
+  .theme-bold {
+    --background: 0 0% 100%; --surface: 40 30% 96%;
+    --foreground: 0 0% 7%; --card: 0 0% 100%; --card-foreground: 0 0% 7%;
+    --muted: 0 0% 95%; --muted-foreground: 0 0% 36%;
+    --secondary: 0 0% 94%; --secondary-foreground: 0 0% 9%;
+    --border: 0 0% 87%; --input: 0 0% 87%;
+    --primary: 0 0% 7%; --primary-foreground: 0 0% 100%;
+    --accent: 0 0% 94%; --accent-foreground: 0 0% 9%; --ring: 0 0% 20%;
+    --brand: 8 88% 52%; --brand-foreground: 0 0% 100%;
+    --highlight: 73 92% 48%; --highlight-foreground: 0 0% 7%;
+    --success: 142 71% 40%; --success-foreground: 0 0% 100%;
+    --radius: 0.35rem; --promo-h1: 10 62% 80%; --promo-h2: 24 72% 70%;
+  }
+
+  /* ── Motion ──────────────────────────────────────────────── */
+  .ring-pulse { animation: ringPulse 2.1s cubic-bezier(.4,0,.2,1) infinite; }
+  @keyframes ringPulse {
+    0%   { box-shadow: 0 0 0 0 hsl(var(--brand) / .5); }
+    70%  { box-shadow: 0 0 0 10px hsl(var(--brand) / 0); }
+    100% { box-shadow: 0 0 0 0 hsl(var(--brand) / 0); }
+  }
+  /* Coral-pulse for flat/spine variants which don't use the theme brand var */
+  .ring-pulse-coral { animation: ringPulseCoral 2.1s cubic-bezier(.4,0,.2,1) infinite; }
+  @keyframes ringPulseCoral {
+    0%   { box-shadow: 0 0 0 0 rgba(225, 67, 40, .5); }
+    70%  { box-shadow: 0 0 0 10px rgba(225, 67, 40, 0); }
+    100% { box-shadow: 0 0 0 0 rgba(225, 67, 40, 0); }
+  }
+  .hero-aurora { background: radial-gradient(120% 110% at 0% 0%, hsl(var(--brand) / .10), transparent 52%); }
+  .theme-premium .hero-aurora {
+    background: radial-gradient(130% 130% at 100% 0%, hsl(var(--brand) / .16), transparent 55%),
+                radial-gradient(120% 120% at 0% 110%, hsl(330 80% 62% / .12), transparent 52%);
+    background-size: 180% 180%; animation: drift 16s ease-in-out infinite alternate;
+  }
+  .theme-bold .hero-aurora { background: linear-gradient(115deg, hsl(var(--highlight) / .28), transparent 58%); }
+  @keyframes drift { from { background-position: 0% 0%; } to { background-position: 100% 100%; } }
+
+  /* ── Container-query layout (responds to the page's own width, not the
+     iframe viewport — so it works inside fixed artboards AND when shown
+     standalone at any size) ─────────────────────────────────────────── */
+  .tp-root { container-type: inline-size; container-name: tp; }
+  .tp-grid { display: grid; grid-template-columns: 1fr; gap: 1.25rem; }
+  .tp-foot { display: grid; grid-template-columns: 1fr; gap: 1.5rem; }
+  .tp-foot-bottom { flex-direction: column; }
+  .tp-preview, .tp-updates { display: none; }
+  @container tp (min-width: 680px) and (max-width: 1039px) {
+    .tp-grid { grid-template-columns: minmax(0, 1.5fr) minmax(0, 1fr); }
+    .tp-col3 { grid-column: 1 / -1; }
+  }
+  @container tp (min-width: 1040px) {
+    .tp-grid { grid-template-columns: minmax(0, 1.55fr) minmax(0, 1fr) minmax(0, 1.15fr); }
+  }
+  @container tp (min-width: 760px) {
+    .tp-foot { grid-template-columns: 1.4fr 1fr 1fr; }
+    .tp-foot-bottom { flex-direction: row; }
+  }
+  @container tp (min-width: 640px) { .tp-preview { display: flex; } }
+  @container tp (min-width: 820px) { .tp-updates { display: inline-flex; } }
+
+  /* Center-stage (Variant 4): journey column widest, flanked by the two
+     halves of the order details. */
+  .tp-grid-cs { display: grid; grid-template-columns: 1fr; gap: 2.5rem; }
+  @container tp (min-width: 680px) and (max-width: 1039px) {
+    .tp-grid-cs { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); column-gap: 3rem; row-gap: 2.5rem; }
+    .tp-grid-cs > :nth-child(2) { grid-column: 1 / -1; order: -1; }
+  }
+  @container tp (min-width: 1040px) {
+    .tp-grid-cs { grid-template-columns: minmax(0, 1fr) minmax(0, 1.5fr) minmax(0, 1.08fr); column-gap: 3.25rem; }
+  }
+
+  /* Spine (Variant 5): status & ETA primary on left, narrow timeline spine
+     in the middle, your order + IDs + fenced promo on the right. */
+  .tp-grid-spine { display: grid; grid-template-columns: 1fr; gap: 2.5rem; }
+  @container tp (min-width: 680px) and (max-width: 1039px) {
+    .tp-grid-spine { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); column-gap: 3rem; row-gap: 2.5rem; }
+    .tp-grid-spine > :nth-child(2) { grid-column: 1 / -1; order: -1; }
+  }
+  @container tp (min-width: 1040px) {
+    .tp-grid-spine { grid-template-columns: minmax(0, 1.35fr) minmax(0, 0.78fr) minmax(0, 1fr); column-gap: 3rem; }
+  }
+
+  /* Variant 6 · Modular — ONE consistent 3-column grid across both tiers.
+     TOP: hero spans cols 1-2, delivery is col 3. BOTTOM: three equal cols.
+     Column edges line up vertically down the whole page. */
+  .tp-grid-v6-top { display: grid; grid-template-columns: 1fr; gap: 2.5rem; }
+  .tp-grid-v6-bottom { display: grid; grid-template-columns: 1fr; gap: 2.5rem; }
+  .v6-hero-span { grid-column: auto; }
+  @container tp (min-width: 680px) and (max-width: 1039px) {
+    .tp-grid-v6-bottom { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); column-gap: 3rem; row-gap: 2.5rem; }
+    .tp-grid-v6-bottom > :last-child { grid-column: 1 / -1; }
+  }
+  /* very subtle vertical divider, centered in the 3rem column gap */
+  .v6-divider { position: relative; }
+  .v6-divider::before {
+    content: ''; display: none; position: absolute; top: 0; bottom: 0; left: -1.5rem;
+    width: 1px; background: rgba(25, 23, 20, 0.07);
+  }
+  @container tp (min-width: 1040px) {
+    .tp-grid-v6-top { grid-template-columns: minmax(0, 0.83fr) minmax(0, 1fr) minmax(0, 0.83fr); column-gap: 3rem; }
+    .v6-hero-span { grid-column: 1 / span 2; }
+    .tp-grid-v6-bottom { grid-template-columns: minmax(0, 0.83fr) minmax(0, 1fr) minmax(0, 0.83fr); column-gap: 3rem; }
+    .v6-divider::before { display: block; }
+  }
+
+  /* Variant 7 · Single-tier 3-column with wide EDD hero */
+  .tp-grid-v7 { display: grid; grid-template-columns: 1fr; gap: 2.5rem; }
+  .v7-hero    { grid-area: auto; }
+  .v7-timeline{ grid-area: auto; }
+  .v7-order   { grid-area: auto; }
+  .v7-promo   { grid-area: auto; }
+  @container tp (min-width: 680px) and (max-width: 1039px) {
+    .tp-grid-v7 {
+      grid-template-columns: minmax(0,1fr) minmax(0,1fr);
+      grid-template-areas:
+        'hero  hero'
+        'timeline order'
+        'promo promo';
+      column-gap: 2.5rem; row-gap: 2.5rem;
+    }
+    .v7-hero     { grid-area: hero; }
+    .v7-timeline { grid-area: timeline; }
+    .v7-order    { grid-area: order; }
+    .v7-promo    { grid-area: promo; }
+  }
+  @container tp (min-width: 1040px) {
+    .tp-grid-v7 {
+      grid-template-columns: minmax(0,1fr) minmax(0,1.15fr) minmax(0,1fr);
+      grid-template-rows: auto auto;
+      grid-template-areas:
+        'hero  hero  promo'
+        'timeline order promo';
+      column-gap: 3.5rem; row-gap: 2.5rem;
+    }
+    .v7-hero     { grid-area: hero; }
+    .v7-timeline { grid-area: timeline; align-self: stretch; }
+    .v7-order    { grid-area: order; }
+    .v7-promo    { grid-area: promo; align-self: stretch; }
+    .v7-divider  { position: relative; }
+    .v7-divider::before { content: ''; display: block; position: absolute; top: 0; bottom: 0; left: -1.75rem; width: 1px; background: rgba(25,23,20,0.07); }
+  }
+
+  /* V7 aurora orb animations */
+  @keyframes auroraFloat1 {
+    0%, 100% { transform: translate(0px, 0px) scale(1); }
+    33%       { transform: translate(-22px, 18px) scale(1.09); }
+    66%       { transform: translate(14px, -12px) scale(0.95); }
+  }
+  @keyframes auroraFloat2 {
+    0%, 100% { transform: translate(0px, 0px) scale(1.04); }
+    40%       { transform: translate(26px, -20px) scale(0.93); }
+    75%       { transform: translate(-18px, 24px) scale(1.10); }
+  }
+  @keyframes auroraFloat3 {
+    0%, 100% { transform: translate(0px, 0px) scale(1); }
+    50%       { transform: translate(-10px, 16px) scale(1.07); }
+  }
+  @keyframes grainShift {
+    0%   { transform: translate(0,0); }
+    25%  { transform: translate(-3%,-4%); }
+    50%  { transform: translate(4%,-2%); }
+    75%  { transform: translate(-2%, 3%); }
+    100% { transform: translate(0,0); }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .v7-orb1, .v7-orb2, .v7-orb3, .v7-grain { animation: none !important; }
+  }
+  .ring-pulse-coral { animation: ringPulseCoral 2.1s cubic-bezier(.4,0,.2,1) infinite; }
+  @keyframes ringPulseCoral {
+    0%   { box-shadow: 0 0 0 0 rgba(225,67,40,.45); }
+    70%  { box-shadow: 0 0 0 9px rgba(225,67,40,0); }
+    100% { box-shadow: 0 0 0 0 rgba(225,67,40,0); }
+  }
+
+  .theme-bold .logo-mark span:last-child { letter-spacing: -.04em; }
+  @media (prefers-reduced-motion: reduce) { .ring-pulse, .hero-aurora, .animate-ping { animation: none !important; } }
+
+  html, body { margin: 0; height: 100%; background: #f0eee9; }
+  * { -webkit-font-smoothing: antialiased; }
+</style>
+</head>
+<body>
+<div id="root"></div>
+<script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
+<script type="text/babel" src="design-canvas.jsx"></script>
+<script type="text/babel" src="data.jsx"></script>
+<script type="text/babel" src="icons.jsx"></script>
+<script type="text/babel" src="ui.jsx"></script>
+<script type="text/babel" src="promo.jsx"></script>
+<script type="text/babel" src="tracking-page.jsx"></script>
+<script type="text/babel" src="variant-brutal.jsx"></script>
+<script type="text/babel" src="variant-flat.jsx"></script>
+<script type="text/babel" src="variant-v4.jsx"></script>
+<script type="text/babel" src="variant-v5.jsx"></script>
+<script type="text/babel" src="variant-v6.jsx"></script>
+<script type="text/babel" src="variant-v7.jsx"></script>
+<script type="text/babel" src="app.jsx"></script>
+</body>
+</html>
