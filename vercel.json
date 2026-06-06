@@ -1,4 +1,3 @@
 {
-  "outputDirectory": "tracking-page/project/tracking",
-  "rewrites": [{ "source": "/", "destination": "/v7-standalone.html" }]
+  "outputDirectory": "dist"
 }
